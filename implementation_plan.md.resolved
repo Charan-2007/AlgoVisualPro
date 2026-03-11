@@ -1,0 +1,33 @@
+# Finish AlgoVisual Pro Implementation
+
+This plan details the steps to implement the remaining "Graph DFS" and "Dijkstra" visualizers, which are currently showing as "coming soon" placeholders on the dashboard.
+
+## Proposed Changes
+
+### [src/algorithms/graph.ts](file:///d:/ADSAA%20Visualiser/adsaa-visualiser/src/algorithms/graph.ts)
+- **[MODIFY]** Add `executeGraphDFS(startNode: number): GraphEngineState[]`
+  - Implement depth-first search logic, recording step-by-step states similar to [executeGraphBFS](file:///d:/ADSAA%20Visualiser/adsaa-visualiser/src/algorithms/graph.ts#56-118).
+- **[MODIFY]** Update [GraphEdge](file:///d:/ADSAA%20Visualiser/adsaa-visualiser/src/algorithms/graph.ts#8-14) interface to optionally include `weight?: number`.
+- **[MODIFY]** Create a helper `getWeightedSampleGraph()` to return a graph with edge weights.
+- **[MODIFY]** Add `executeDijkstra(startNode: number): GraphEngineState[]`
+  - Implement Dijkstra's shortest path algorithm.
+  - Track distance arrays and highlight shortest paths.
+  - Record step-by-step states for the animation engine.
+
+### [src/pages/Visualizer.tsx](file:///d:/ADSAA%20Visualiser/adsaa-visualiser/src/pages/Visualizer.tsx)
+- **[MODIFY]** Import `executeGraphDFS` and `executeDijkstra` from `../algorithms/graph`.
+- **[MODIFY]** In the `useEffect` that initializes the states, add branches for `algorithmId === 'graph-dfs'` and `algorithmId === 'dijkstra'`.
+- **[MODIFY]** In the `<div className="canvas-container">` render logic, reuse the `.graph-canvas` for `graph-dfs` and `dijkstra`.
+- **[MODIFY]** For `dijkstra`, update the SVG edge rendering to display the edge `weight` (e.g., as `<text>` elements along the edges) and nodes to display shortest path distances.
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run build` to ensure there are no TypeScript errors.
+- Run `npm run lint` if configured.
+
+### Manual Verification
+- Start the development server using `npm run dev`.
+- Navigate to the Home dashboard (`/`).
+- Click on **Graph DFS** and verify the animation plays correctly, traversing nodes depth-first.
+- Click on **Dijkstra** and verify the algorithm visually computes shortest paths step-by-step and displays edge weights.
